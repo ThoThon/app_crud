@@ -16,40 +16,16 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final controller = LoginController();
-  bool showErrors = false; // Flag để quyết định khi nào hiện lỗi
-
-  @override
-  void initState() {
-    super.initState();
-
-    // Lắng nghe thay đổi input nhưng không hiển thị lỗi ngay
-    controller.taxController.addListener(() {
-      controller.validateTax();
-      if (showErrors) setState(() {}); // Chỉ rebuild nếu đang hiển thị lỗi
-    });
-    controller.usernameController.addListener(() {
-      controller.validateUsername();
-      if (showErrors) setState(() {});
-    });
-    controller.passwordController.addListener(() {
-      controller.validatePassword();
-      if (showErrors) setState(() {});
-    });
-  }
+  final _formKey = GlobalKey<FormState>();
 
   void _onLoginPressed() {
-    if (controller.validateAll()) {
+    if (_formKey.currentState!.validate()) {
       if (controller.checkLogin()) {
         Navigator.pushNamedAndRemoveUntil(
             context, Routes.home, (route) => false);
       } else {
-        _showErrorDialog("Thông tin đăng nhập không hợp lệ!");
+        _showErrorDialog("Thông tin đăng nhập không hợp lệ");
       }
-    } else {
-      setState(() {
-        showErrors = true; // Bật flag hiển thị lỗi
-        controller.validateAll();
-      });
     }
   }
 
@@ -87,7 +63,12 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        child: SafeArea(child: _buildBodyPage()),
+        child: SafeArea(
+          child: Form(
+            key: _formKey,
+            child: _buildBodyPage(),
+          ),
+        ),
       ),
     );
   }
@@ -128,29 +109,49 @@ class _LoginScreenState extends State<LoginScreen> {
       label: "Mã số thuế",
       controller: controller.taxController,
       inputFormatter: [FilteringTextInputFormatter.digitsOnly],
-      errorText: showErrors ? controller.taxError : null,
-      hintText: 'Mã số thuế', // Chỉ hiện lỗi khi flag = true
+      hintText: 'Mã số thuế',
       clearIconAsset: 'assets/icons/blank.svg',
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) {
+          return 'Mã số thuế không được để trống';
+        }
+        if (value.length != 10) {
+          return 'Mã số thuế phải bao gồm 10 số';
+        }
+        return null;
+      },
     );
   }
 
   Widget _buildUserName() {
     return InputField(
-      label: "Tài khoản",
-      controller: controller.usernameController,
-      errorText: showErrors ? controller.usernameError : null,
-      hintText: 'Tài khoản',
-      clearIconAsset: 'assets/icons/blank.svg',
-    );
+        label: "Tài khoản",
+        controller: controller.usernameController,
+        hintText: 'Tài khoản',
+        clearIconAsset: 'assets/icons/blank.svg',
+        validator: (value) {
+          if (value == null || value.trim().isEmpty) {
+            return 'Tài khoản không được để trống';
+          }
+          return null;
+        });
   }
 
   Widget _buildPassword() {
     return InputField(
       label: "Mật khẩu",
       controller: controller.passwordController,
-      errorText: showErrors ? controller.passwordError : null,
       hintText: 'Mật khẩu',
       isPassword: true,
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) {
+          return 'Mật khẩu không được để trống';
+        }
+        if (value.length < 6 || value.length > 50) {
+          return 'Mật khóa chỉ từ 6 đến 50 ký tự';
+        }
+        return null;
+      },
     );
   }
 

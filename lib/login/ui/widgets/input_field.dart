@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 
 class InputField extends StatefulWidget {
   final String label;
   final String hintText;
   final TextEditingController controller;
-  final String? errorText;
   final List<TextInputFormatter>? inputFormatter;
   final String? clearIconAsset;
   final bool isPassword;
+  final String? Function(String?)? validator;
 
   const InputField({
     super.key,
     required this.label,
     required this.hintText,
     required this.controller,
-    this.errorText,
     this.inputFormatter,
     this.clearIconAsset,
     this.isPassword = false,
+    this.validator,
   });
 
   @override
@@ -29,6 +29,7 @@ class InputField extends StatefulWidget {
 class _InputFieldState extends State<InputField> {
   bool isObscure = true;
   String inputText = '';
+  String? errorMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +45,7 @@ class _InputFieldState extends State<InputField> {
           ),
           const SizedBox(height: 8),
 
-          // TextField
-          TextField(
+          TextFormField(
             controller: widget.controller,
             obscureText: widget.isPassword ? isObscure : false,
             obscuringCharacter: '*',
@@ -63,8 +63,6 @@ class _InputFieldState extends State<InputField> {
               ),
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-
-              // Suffix icon
               suffixIcon: widget.isPassword
                   ? IconButton(
                       onPressed: () {
@@ -101,18 +99,24 @@ class _InputFieldState extends State<InputField> {
                 inputText = value;
               });
             },
+            validator: (value) {
+              final result = widget.validator?.call(value);
+              setState(() {
+                errorMessage = result;
+              });
+              return null;
+            },
           ),
 
           const SizedBox(height: 4),
 
-          // Error text custom
-          widget.errorText != null && widget.errorText!.isNotEmpty
+          errorMessage != null && errorMessage!.isNotEmpty
               ? Padding(
                   padding: const EdgeInsets.only(right: 16),
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: Text(
-                      widget.errorText!,
+                      errorMessage!,
                       style: const TextStyle(
                         fontSize: 12,
                         color: Color(0xFFf24e1e),
