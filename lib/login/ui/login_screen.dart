@@ -19,6 +19,12 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
   @override
+  initState() {
+    super.initState();
+    controller.loadSavedLogin();
+  }
+
+  @override
   void dispose() {
     controller.dispose();
     super.dispose();

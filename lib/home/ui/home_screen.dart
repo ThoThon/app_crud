@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../models/login/login_storage.dart';
 import '../../routes/app_routes.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -10,6 +11,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final _storage = LoginStorage();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       child: Center(
         child: ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
+            await _storage.logout();
             Navigator.pushNamedAndRemoveUntil(
               context,
               Routes.login,
