@@ -10,4 +10,10 @@ class LoginController {
         usernameController.text.trim() == "demo" &&
         passwordController.text.trim() == "123456";
   }
+
+  void dispose() {
+    taxController.dispose();
+    usernameController.dispose();
+    passwordController.dispose();
+  }
 }

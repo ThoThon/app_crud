@@ -18,6 +18,12 @@ class _LoginScreenState extends State<LoginScreen> {
   final controller = LoginController();
   final _formKey = GlobalKey<FormState>();
 
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   void _onLoginPressed() {
     if (_formKey.currentState?.validate() ?? false) {
       if (controller.checkLogin()) {
