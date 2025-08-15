@@ -8,7 +8,7 @@ class InputField extends StatefulWidget {
   final TextEditingController controller;
   final List<TextInputFormatter>? inputFormatter;
   final String? clearIconAsset;
-  final bool isPassword;
+  final bool showPassword;
   final String? Function(String?)? validator;
 
   const InputField({
@@ -18,7 +18,7 @@ class InputField extends StatefulWidget {
     required this.controller,
     this.inputFormatter,
     this.clearIconAsset,
-    this.isPassword = false,
+    this.showPassword = false,
     this.validator,
   });
 
@@ -27,7 +27,7 @@ class InputField extends StatefulWidget {
 }
 
 class _InputFieldState extends State<InputField> {
-  bool isObscure = true;
+  bool showSuffix = true;
   String inputText = '';
   String? errorMessage;
 
@@ -47,7 +47,7 @@ class _InputFieldState extends State<InputField> {
 
           TextFormField(
             controller: widget.controller,
-            obscureText: widget.isPassword ? isObscure : false,
+            obscureText: widget.showPassword ? showSuffix : false,
             obscuringCharacter: '*',
             cursorColor: const Color(0xFFf24e1e),
             keyboardType:
@@ -63,15 +63,15 @@ class _InputFieldState extends State<InputField> {
               ),
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-              suffixIcon: widget.isPassword
+              suffixIcon: widget.showPassword
                   ? IconButton(
                       onPressed: () {
                         setState(() {
-                          isObscure = !isObscure;
+                          showSuffix = !showSuffix;
                         });
                       },
                       icon: SvgPicture.asset(
-                        isObscure
+                        showSuffix
                             ? 'assets/icons/eyeclose.svg'
                             : 'assets/icons/eyeopen.svg',
                         width: 24,

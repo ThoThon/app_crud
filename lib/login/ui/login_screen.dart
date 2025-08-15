@@ -19,7 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
   void _onLoginPressed() {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState?.validate() ?? false) {
       if (controller.checkLogin()) {
         Navigator.pushNamedAndRemoveUntil(
             context, Routes.home, (route) => false);
@@ -142,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
       label: "Mật khẩu",
       controller: controller.passwordController,
       hintText: 'Mật khẩu',
-      isPassword: true,
+      showPassword: true,
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
           return 'Mật khẩu không được để trống';
