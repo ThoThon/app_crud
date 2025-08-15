@@ -27,106 +27,105 @@ class InputField extends StatefulWidget {
 }
 
 class _InputFieldState extends State<InputField> {
-  bool showSuffix = true;
-  String inputText = '';
-  String? errorMessage;
+  bool _obscure = true;
+  String _inputText = '';
+  String? _errorMessage;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Label
           Text(
             widget.label,
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
-
           TextFormField(
             controller: widget.controller,
-            obscureText: widget.showPassword ? showSuffix : false,
+            obscureText: widget.showPassword ? _obscure : false,
             obscuringCharacter: '*',
             cursorColor: const Color(0xFFf24e1e),
-            keyboardType:
-                widget.inputFormatter != null ? TextInputType.number : null,
+            keyboardType: widget.inputFormatter != null
+                ? TextInputType.number
+                : TextInputType.text,
             inputFormatters: widget.inputFormatter,
             decoration: InputDecoration(
               hintText: widget.hintText,
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
               enabledBorder: InputBorder.none,
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide:
                     const BorderSide(color: Color(0xFFf24e1e), width: 2),
               ),
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-              suffixIcon: widget.showPassword
-                  ? IconButton(
-                      onPressed: () {
-                        setState(() {
-                          showSuffix = !showSuffix;
-                        });
-                      },
-                      icon: SvgPicture.asset(
-                        showSuffix
-                            ? 'assets/icons/eyeclose.svg'
-                            : 'assets/icons/eyeopen.svg',
-                        width: 24,
-                        height: 24,
-                      ),
-                    )
-                  : (inputText.isNotEmpty && widget.clearIconAsset != null)
-                      ? IconButton(
-                          onPressed: () {
-                            setState(() {
-                              widget.controller.clear();
-                              inputText = '';
-                            });
-                          },
-                          icon: SvgPicture.asset(
-                            widget.clearIconAsset!,
-                            width: 24,
-                            height: 24,
-                          ),
-                        )
-                      : null,
+              errorStyle: const TextStyle(height: 0, fontSize: 0),
+              errorBorder: InputBorder.none,
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide:
+                    const BorderSide(color: Color(0xFFf24e1e), width: 2),
+              ),
+              suffixIcon: _buildSuffixIcon(),
             ),
-            onChanged: (value) {
-              setState(() {
-                inputText = value;
-              });
-            },
+            onChanged: (value) => setState(() => _inputText = value),
             validator: (value) {
               final result = widget.validator?.call(value);
-              setState(() {
-                errorMessage = result;
-              });
-              return null;
+              setState(
+                () => _errorMessage = result,
+              );
+              return result;
             },
           ),
-
           const SizedBox(height: 4),
-
-          errorMessage != null && errorMessage!.isNotEmpty
-              ? Padding(
-                  padding: const EdgeInsets.only(right: 16),
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      errorMessage!,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Color(0xFFf24e1e),
-                      ),
-                    ),
+          if (_errorMessage != null && _errorMessage!.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  _errorMessage!,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Color(0xFFf24e1e),
                   ),
-                )
-              : const SizedBox(),
+                ),
+              ),
+            ),
         ],
       ),
     );
+  }
+
+  Widget? _buildSuffixIcon() {
+    if (widget.showPassword) {
+      return IconButton(
+        onPressed: () => setState(() => _obscure = !_obscure),
+        icon: SvgPicture.asset(
+          _obscure ? 'assets/icons/eyeclose.svg' : 'assets/icons/eyeopen.svg',
+          width: 24,
+          height: 24,
+        ),
+      );
+    }
+
+    if (_inputText.isNotEmpty && widget.clearIconAsset != null) {
+      return IconButton(
+        onPressed: () {
+          widget.controller.clear();
+          setState(() => _inputText = '');
+        },
+        icon: SvgPicture.asset(
+          widget.clearIconAsset!,
+          width: 24,
+          height: 24,
+        ),
+      );
+    }
+
+    return null;
   }
 }
