@@ -1,15 +1,14 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../models/login/login_info.dart';
+import '../models/login/login_storage.dart';
+
 class HiveStorage {
   static Future<void> init() async {
     await Hive.initFlutter();
-  }
 
-  static Future<Box<T>> openBox<T>(String name) async {
-    return await Hive.openBox<T>(name);
-  }
+    Hive.registerAdapter(LoginInfoAdapter());
 
-  static Box<T> getBox<T>(String name) {
-    return Hive.box<T>(name);
+    await Hive.openBox<LoginInfo>(LoginStorage.boxName);
   }
 }

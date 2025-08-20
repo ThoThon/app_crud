@@ -30,9 +30,9 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void _onLoginPressed() {
+  void _onLoginPressed() async {
     if (_formKey.currentState?.validate() ?? false) {
-      if (controller.login()) {
+      if (await controller.login()) {
         Navigator.pushNamedAndRemoveUntil(
             context, Routes.home, (route) => false);
       } else {
