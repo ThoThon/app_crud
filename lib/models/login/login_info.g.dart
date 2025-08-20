@@ -17,25 +17,22 @@ class LoginInfoAdapter extends TypeAdapter<LoginInfo> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return LoginInfo(
-      username: fields[0] as String?,
-      password: fields[1] as String?,
-      taxCode: fields[2] as String?,
-      isLoggedIn: fields[3] as bool,
+      username: fields[0] as String,
+      password: fields[1] as String,
+      taxCode: fields[2] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, LoginInfo obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.username)
       ..writeByte(1)
       ..write(obj.password)
       ..writeByte(2)
-      ..write(obj.taxCode)
-      ..writeByte(3)
-      ..write(obj.isLoggedIn);
+      ..write(obj.taxCode);
   }
 
   @override

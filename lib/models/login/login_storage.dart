@@ -25,14 +25,7 @@ class LoginStorage {
 
   /// Kiểm tra đã có dữ liệu login chưa
   bool hasLoginInfo() {
-    return _box.containsKey(keyUserLogin);
-  }
-
-  Future<void> logout() async {
-    final stored = getLoginInfo();
-    if (stored != null) {
-      stored.isLoggedIn = false;
-      await saveLoginInfo(stored);
-    }
+    final info = getLoginInfo();
+    return info != null && info.username.isNotEmpty && info.password.isNotEmpty;
   }
 }

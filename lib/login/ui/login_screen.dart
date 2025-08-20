@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _onLoginPressed() {
     if (_formKey.currentState?.validate() ?? false) {
-      if (controller.checkLogin()) {
+      if (controller.login()) {
         Navigator.pushNamedAndRemoveUntil(
             context, Routes.home, (route) => false);
       } else {
