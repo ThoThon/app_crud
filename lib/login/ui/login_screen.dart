@@ -19,14 +19,22 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
   @override
+  initState() {
+    super.initState();
+    controller.loadSavedLogin();
+  }
+
+  @override
   void dispose() {
     controller.dispose();
     super.dispose();
   }
 
-  void _onLoginPressed() {
+  void _onLoginPressed() async {
     if (_formKey.currentState?.validate() ?? false) {
-      if (controller.checkLogin()) {
+      final success = await controller.login();
+      if (!mounted) return;
+      if (success) {
         Navigator.pushNamedAndRemoveUntil(
             context, Routes.home, (route) => false);
       } else {

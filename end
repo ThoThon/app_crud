@@ -1,0 +1,41 @@
+[33mcommit acee9b9e5b3508aee3c4b5d5ab76fa7aae3b72be[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/hive-setup[m[33m, [m[1;31morigin/feature/hive-setup[m[33m)[m
+Author: Hoang Dat <hdat616@gmail.com>
+Date:   Wed Aug 20 09:49:01 2025 +0700
+
+    Update hive_storage
+
+[33mcommit 95e5519f593de5a5119971b51b69d9393ddf8c92[m
+Author: Hoang Dat <hdat616@gmail.com>
+Date:   Fri Aug 15 16:29:43 2025 +0700
+
+    Setup Hive
+
+[33mcommit a98428a6d6e3fab715770b6c520e79a2481b4dbb[m[33m ([m[1;31morigin/feat/login[m[33m, [m[1;32mfeat/login[m[33m)[m
+Author: Hoang Dat <hdat616@gmail.com>
+Date:   Fri Aug 15 09:00:57 2025 +0700
+
+    Add dispose in controller
+
+[33mcommit 92cb336edd9ed9c586e99b6f9c4597385914f12d[m
+Author: Hoang Dat <hdat616@gmail.com>
+Date:   Fri Aug 15 08:32:58 2025 +0700
+
+    Force not null constraint
+
+[33mcommit 84dd699f37aadd9f88501d4338ff1f715caf8d12[m
+Author: Hoang Dat <hdat616@gmail.com>
+Date:   Thu Aug 14 11:01:09 2025 +0700
+
+    Update Textformfield
+
+[33mcommit bf0bff273c2b8353c929996e8272729bdb0f0cf6[m
+Author: Hoang Dat <hdat616@gmail.com>
+Date:   Wed Aug 13 15:34:29 2025 +0700
+
+    Add login feature
+
+[33mcommit e25789cc3e41fc690e3fdf64d50a81f9e1b693d7[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m
+Author: Hoang Dat <hdat616@gmail.com>
+Date:   Tue Aug 12 15:39:58 2025 +0700
+
+    Fisrt Commit
